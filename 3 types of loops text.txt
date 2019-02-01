@@ -1,0 +1,65 @@
+//PARKER DAVIS
+//2-3-2016
+
+int leftforward = 2;        //yellow wire in in1. port 2
+int leftbackward = 3;       //blue wire in in2. port 6
+int rightforward = 6;       //purple wire in in3. port 3
+int rightbackward = 7;      //green wire in in4. port 7
+int count = 0;              //counter variable for loop
+void setup() {
+  // put your setup code here, to run once:
+  pinMode(leftforward, OUTPUT);     //sets pin 2 (leftforward).
+  pinMode(leftbackward, OUTPUT);    //sets pin 6 (leftbackward).
+  pinMode(rightforward, OUTPUT);    //sets pin 3 (rightforward).
+  pinMode(rightbackward, OUTPUT);   //sets pin 7 (rightbackward).
+
+  //FOR-NEXT loop
+  for (int j = 0; j < 3; j++)
+  {
+    motorforward();
+    delay(1000);
+    motorstop();
+    delay(3000);
+  }
+
+  //DO-WHILE loop
+  do
+  {
+    motorforward();
+    delay(1000);
+    motorstop();
+    delay(3000);
+    count++;
+  } while (count < 3);
+
+  motorforward();
+  delay(1000);
+  motorstop();
+  delay(3000);
+  motorforward();
+  delay(1000);
+  motorstop();
+  delay(3000);
+  motorforward();
+  delay(1000);
+  motorstop();
+  delay(3000);
+}
+
+void loop() {}
+void motorforward() //both motors forward
+{
+  //motors forwards
+  analogWrite(leftbackward, 175); //leftbackward to lowest speed.
+  analogWrite(rightbackward, 175); //rightbackward to lowest speed.
+  analogWrite(leftforward, 0); //leftforward to highest speed.
+  analogWrite(rightforward, 0); //rightforward to highest speed.
+}
+void motorstop()//both motors stop
+{
+  //all motors stop
+  analogWrite(leftbackward, 0); //leftbackward to lowest speed.
+  analogWrite(rightbackward, 0); //rightbackward to lowest speed.
+  analogWrite(leftforward, 0); //leftforward to highest speed.
+  analogWrite(rightforward, 0); //rightforward to highest speed.
+}

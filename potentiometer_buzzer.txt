@@ -1,0 +1,53 @@
+//Parker Davis
+//3-16-16
+//reads potentiometer value and calculates the voltage
+//creates a wave of sound using the potentiometer
+
+int poten = A0;           //sets potentiometer to pin A0
+int readvalue;            //declaring our readvalue variable
+float voltage;            //declare our voltage value
+int buzzer = 10;
+int pitch = 0;
+
+void setup() {
+  pinMode(poten, INPUT);
+  pinMode(buzzer, OUTPUT);
+  Serial.begin(9600);
+}
+
+void loop() {
+  readvalue = analogRead(poten);//read poten
+  //puts value in readValue
+  //calculating the real world voltage
+  voltage = (5. / 1023) * readvalue;
+  
+  //no tone if there is no voltage
+  if (voltage == 0)
+  {
+    noTone(buzzer);
+    Serial.println(voltage);//print results
+  }
+  //creates a wave of sound (up then down)
+  else
+  {
+    pitch = voltage*1000;       //calculates a voltage
+    Serial.println(voltage);    //print results
+    tone(buzzer,pitch);         //plays the tone
+    for (int k = 0; k<=20; k++)
+    {
+      tone(buzzer,pitch+(10*k));         //plays the tone
+      Serial.println(pitch+(10*k));    //print results
+      delay(25);
+    }
+    for (int i = 0; i<=40; i++)
+    {
+      tone(buzzer,pitch-(10*i));         //plays the tone
+      Serial.println(pitch-(10*i));
+      delay(25);
+    }
+  }
+  noTone(buzzer);
+  Serial.println(voltage);//print results
+  delay(300);
+
+}

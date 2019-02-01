@@ -1,0 +1,80 @@
+//Parker Davis
+//2-12-16
+//inputing through the serial monitor
+
+
+float distance = 0;            //distance the sonar reads
+float duration = 0;            //time takes to recieve echo
+int echo = 9;                  //orange wire on echo sonar, port 9
+int trig = 8;                  //brown wire on trig sonar, port 8
+int cm = 0;                    //measurement 
+int inch = 0;                  //measurement
+
+
+void setup() {
+  pinMode(trig, OUTPUT);            //sets pin 11, output
+  pinMode(echo, INPUT);             //sets pin 10, input
+  Serial.begin(9600);
+}
+
+void loop() {
+  Serial.println("How many times would you like to read?");//asks user for input
+  while (Serial.available() == 0) {}  //waits until a user input
+
+  int numreads = Serial.parseInt();   //creates variable using input by user
+  Serial.print("It will read: ");
+  Serial.print(numreads);                   //prints the variable input
+  Serial.print("times.\n\n");
+
+  for (int k = 0; k < numreads; k++)  //loops number of user requested
+  {
+    sonar();          //sonar subroutine
+    inchconversion(); //converts meters>inch
+    CMconversion();   //converts meters>CM
+
+    
+    
+    //printing format
+    Serial.print("OBJECT DETECTED\t");
+    Serial.print (k);
+    Serial.print (" times have been read\n");
+
+    Serial.print(distance);
+    Serial.println(" meters");
+
+    Serial.print(cm);
+    Serial.println(" cm");
+
+    Serial.print(inch);
+    Serial.println(" inch\n\n");
+
+    delay(500);
+  }
+
+}
+void sonar () {
+  //sends and receives the ping then converts it it to cm
+
+  delayMicroseconds(2);
+
+  digitalWrite(trig, LOW); //turns trigger off
+  delayMicroseconds(2);
+
+  digitalWrite(trig, HIGH); //sends soundwave
+  delayMicroseconds(10);
+
+  digitalWrite(trig, LOW); //turns trigger off. soundwave Off
+
+  duration = pulseIn(echo, HIGH); //how long it takes to get echo
+  distance = (duration / 58 / 100); //meters
+
+
+}
+void CMconversion()
+{
+  cm = distance * 100; //m to cm
+}
+void inchconversion()
+{
+  inch = (distance * 100) / 2.54; //m to inches
+}
